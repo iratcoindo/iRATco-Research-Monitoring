@@ -108,3 +108,8 @@ def dashboard():
         st.session_state.login=False
         st.session_state.user=None
         st.rerun()
+
+if st.session_state.login:
+    dashboard()
+else:
+    login_page()
