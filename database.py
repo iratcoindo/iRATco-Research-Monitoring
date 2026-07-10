@@ -1,18 +1,24 @@
+import bcrypt
+
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
-import bcrypt
 
 engine = create_engine("sqlite:///irm.db")
 
 Base = declarative_base()
 
 class User(Base):
+
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
+
     username = Column(String, unique=True)
+
     password = Column(String)
+
     fullname = Column(String)
+
     role = Column(String)
 
 Base.metadata.create_all(engine)
@@ -67,6 +73,7 @@ def create_default_admin():
     session.commit()
 
 class Research(Base):
+
     __tablename__ = "research"
 
     id = Column(Integer, primary_key=True)
@@ -82,3 +89,45 @@ class Research(Base):
     progress = Column(Integer)
 
     owner = Column(String)
+
+Base.metadata.create_all(engine)
+
+Session = sessionmaker(bind=engine)
+
+def create_default_admin():
+
+    session = Session()
+
+    # Admin
+    admin = session.query(User).filter_by(username="admin").first()
+
+    if admin is None:
+
+        admin = User(
+            username="admin",
+            password=hash_password("admin123"),
+            fullname="Administrator",
+            role="Admin"
+        )
+
+        session.add(admin)
+
+    # Research
+    research = session.query(Research).filter_by(code="IRM-2026-001").first()
+
+    if research is None:
+
+        research = Research(
+            code="IRM-2026-001",
+            title="Stem Cell Therapy for Retinitis Pigmentosa",
+            principal_investigator="Prof. Kang",
+            design_link="https://drive.google.com",
+            progress=35,
+            owner="admin"
+        )
+
+        session.add(research)
+
+    session.commit()
+
+    session.close()
