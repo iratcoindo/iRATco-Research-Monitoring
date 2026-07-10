@@ -74,20 +74,37 @@ def dashboard():
         owner=st.session_state.user.username
     ).first()
 
-st.header("Research Overview")
+    st.title("🧬 iRATco Research Monitoring")
 
-st.write("### Principal Investigator")
-st.info(research.principal_investigator)
+    if research is None:
 
-st.write("### Research Code")
-st.code(research.code)
+        st.warning("Belum ada research untuk user ini.")
 
-st.write("### Research Title")
-st.success(research.title)
+    else:
 
-st.write("### Research Design")
+        st.subheader("Principal Investigator")
+        st.info(research.principal_investigator)
 
-st.link_button(
-    "📄 Open Research Design",
-    research.design_link
-)
+        st.subheader("Research Code")
+        st.code(research.code)
+
+        st.subheader("Research Title")
+        st.success(research.title)
+
+        st.subheader("Research Design")
+
+        st.link_button(
+            "📄 Open Research Design",
+            research.design_link
+        )
+
+        st.progress(research.progress/100)
+
+        st.write(f"{research.progress}%")
+
+    session.close()
+
+    if st.button("Logout"):
+        st.session_state.login=False
+        st.session_state.user=None
+        st.rerun()
