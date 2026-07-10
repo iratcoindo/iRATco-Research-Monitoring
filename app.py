@@ -1,4 +1,5 @@
 import streamlit as st
+from database import Research
 
 from database import (
     Session,
@@ -67,32 +68,26 @@ def login_page():
 
 def dashboard():
 
-    st.title("Dashboard")
+    session = Session()
 
-    st.success(
-        f"Welcome {st.session_state.user.fullname}"
-    )
+    research = session.query(Research).filter_by(
+        owner=st.session_state.user.username
+    ).first()
 
-    st.write("Role :", st.session_state.user.role)
+st.header("Research Overview")
 
-    st.divider()
+st.write("### Principal Investigator")
+st.info(research.principal_investigator)
 
-    st.write("Versi 0.1")
+st.write("### Research Code")
+st.code(research.code)
 
-    st.info("Login berhasil.")
+st.write("### Research Title")
+st.success(research.title)
 
-    if st.button("Logout"):
+st.write("### Research Design")
 
-        st.session_state.login = False
-        st.session_state.user = None
-
-        st.rerun()
-
-
-if st.session_state.login:
-
-    dashboard()
-
-else:
-
-    login_page()
+st.link_button(
+    "📄 Open Research Design",
+    research.design_link
+)
