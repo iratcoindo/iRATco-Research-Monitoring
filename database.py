@@ -53,3 +53,32 @@ def create_default_admin():
         session.commit()
 
     session.close()
+
+    research = Research(
+        code="IRM-2026-001",
+        title="Stem Cell Therapy for Retinitis Pigmentosa",
+        principal_investigator="Prof. Kang",
+        design_link="https://drive.google.com/.....",
+        progress=35,
+        owner="admin"
+    )
+    
+    session.add(research)
+    session.commit()
+
+class Research(Base):
+    __tablename__ = "research"
+
+    id = Column(Integer, primary_key=True)
+
+    code = Column(String)
+
+    title = Column(String)
+
+    principal_investigator = Column(String)
+
+    design_link = Column(String)
+
+    progress = Column(Integer)
+
+    owner = Column(String)
