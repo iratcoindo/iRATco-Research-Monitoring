@@ -113,3 +113,91 @@ if st.session_state.login:
     dashboard()
 else:
     login_page()
+
+timeline = [
+    {
+        "step":"Proposal Approved",
+        "status":"done",
+        "date":"10 Jul 2026",
+        "link":"https://drive.google.com/..."
+    },
+    {
+        "step":"Animal Acclimatization",
+        "status":"done",
+        "date":"15 Jul 2026",
+        "link":"https://drive.google.com/..."
+    },
+    {
+        "step":"Disease Modeling",
+        "status":"done",
+        "date":"25 Jul 2026",
+        "link":"https://drive.google.com/..."
+    },
+    {
+        "step":"Treatment",
+        "status":"running",
+        "date":"30 Jul 2026",
+        "link":"https://drive.google.com/..."
+    },
+    {
+        "step":"Midline Data Collection",
+        "status":"pending",
+        "date":"",
+        "link":""
+    },
+    {
+        "step":"Termination",
+        "status":"pending",
+        "date":"",
+        "link":""
+    },
+    {
+        "step":"Sample Analysis",
+        "status":"pending",
+        "date":"",
+        "link":""
+    },
+    {
+        "step":"Data Analysis",
+        "status":"pending",
+        "date":"",
+        "link":""
+    },
+    {
+        "step":"Final Report",
+        "status":"pending",
+        "date":"",
+        "link":""
+    }
+]
+
+st.subheader("📋 Research Timeline")
+
+for item in timeline:
+
+    if item["status"] == "done":
+        st.success(f"✅ {item['step']}")
+
+        st.caption(item["date"])
+
+        st.link_button(
+            "📁 View Data",
+            item["link"]
+        )
+
+    elif item["status"] == "running":
+
+        st.warning(f"🟡 {item['step']}")
+
+        st.caption(item["date"])
+
+        st.link_button(
+            "📁 View Data",
+            item["link"]
+        )
+
+    else:
+
+        st.info(f"⚪ {item['step']}")
+
+    st.markdown("---")
